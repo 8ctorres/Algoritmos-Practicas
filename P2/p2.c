@@ -226,12 +226,12 @@ void print_shell(){
         //Algoritmo Shell
     printf("Ordenación de Shell: \n");
     printf("\tVector de entrada ordenado:\n");
-    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^0.8\t   "
-    "         t(n)/n^1.01\t\t     t(n)/n^1.2\n");
+    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^0.8"
+    "\t  t(n)/(n^1.01*log2(n))\t\t     t(n)/n^1.2\n");
     for (n=500; n<=2048000; n*=2){
         tiempo = medir_tiempo(ord_shell, ascendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.01)),
+               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.01)*log2(n)),
                tiempo/(pow(n,1.2)));
     }
     printf("\n");
