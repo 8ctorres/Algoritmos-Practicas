@@ -1,0 +1,94 @@
+
+ * Algoritmos
+ * Práctica 1
+ * Carlos Torres (carlos.torres)
+ * Daniel Vega (d.s.vega)
+ * Grupo 4.3
+
+* Informe Practica 1: Algoritmos de suma de la subsecuencia máxima:
+    En este experimento se evaluará empíricamente el rendimiento de dos algoritmos para
+  encontrar la suma de la subsecuencia máxima, en función del tamaño del vector pasado
+  como parámetro.
+  
+    1.Características de la máquina: ----------------- 
+                                     OS: Ubuntu 18.04.3 LTS x86_64 
+                                     Kernel: 4.15.0-65-generic 
+                                     CPU: Intel i5-7200U (4) @ 3.100GHz 
+                                     Memoria Principal: 7886MiB
+                                     -----------------
+                                     Compilador: gcc 7.4.0
+
+    2.Unidades de medida: los tiempos se expresarán en microsegundos.
+
+    3.Método: Se determinarán los tiempos de ejecución de los algoritmos con una
+    serie de vectores de valores aleatorios, cuyo tamaño seguirá una
+    progresión geométrica de razón 2 que parte de 500 elementos.
+    Se usarán 2 cotas (subestimada y sobreestimada)
+    para afianzar los resultados de la cota ajustada.
+
+      K = 2000 <- En caso de que el tiempo de ejecución sea
+    muy pequeño se calculará una media de K ejecuciones del algoritmo (con vectores
+    distintos)
+
+    4.Resultados:
+        t(n) -> función de tiempo de Algoritmo 1
+        t'(n)-> función de tiempo de Algoritmo 2
+
+    Algoritmo SumaSubMax 1: 
+                              Cota subestimada:   Cota exacta:      Cota sobreestimada:
+	       n			  t(n)		     t(n)/n^1.8		     t(n)/n^2.0		     t(n)/n^2.2
+(*)	     500		     324.17350		 0.004493983796		 0.001296694000		 0.000374148062
+	    1000		    1281.00000		 0.005099752855		 0.001281000000		 0.000321772652
+	    2000		    5099.00000		 0.005829496149		 0.001274750000		 0.000278752661
+	    4000		   20336.00000		 0.006676633679		 0.001271000000		 0.000241954416
+	    8000		   81336.00000		 0.007668683852		 0.001270875000		 0.000210612837
+	   16000		  327233.00000		 0.008860151034		 0.001278253906		 0.000184413679
+	   32000		 1309628.00000		 0.010183052687		 0.001278933594		 0.000160626797
+	   64000		 5240199.00000		 0.011701022831		 0.001279345459		 0.000139878780
+                                                    cte = 0.00128
+
+    Algoritmo SumaSubMax 2: 
+                              Cota subestimada:   Cota exacta:      Cota sobreestimada:
+	       n			 t'(n)		    t'(n)/n^0.8		    t'(n)/n             t'(n)/n^1.2
+(*)	     500		       1.95050		 0.013519790166		 0.003901000000		 0.001125594467
+(*)	    1000		       3.55500		 0.014152709913		 0.003555000000		 0.000892975626
+(*)	    2000		       6.31250		 0.014433690701		 0.003156250000		 0.000690184809
+(*)	    4000		      11.39000		 0.014958075846		 0.002847500000		 0.000542065459
+(*)	    8000		      21.61250		 0.016301704509		 0.002701562500		 0.000447710234
+(*)	   16000		      41.72950		 0.018077867333		 0.002608093750		 0.000376269661
+(*)	   32000		      80.84900		 0.020116604145		 0.002526531250		 0.000317317978
+(*)	   64000		     160.08250		 0.022877042492		 0.002501289063		 0.000273481460
+(*)	  128000		     317.35500		 0.026048179105		 0.002479335937		 0.000235989881
+	  256000		     634.00000		 0.029888029667		 0.002476562500		 0.000205211313
+	  512000		    1272.00000		 0.034440634394		 0.002484375000		 0.000179210379
+	 1024000		    2553.00000		 0.039701859626		 0.002493164062		 0.000156563625
+         2048000		    5210.00000		 0.046534361729		 0.002500976562		 0.000139072666
+                                                          cte = 0.0025
+
+                        (*) Tiempo promedio en 2000 ejecuciones del algoritmo
+
+    5.Conclusión: Los cocientes del tiempo en funcion de n entre cotas ajustadas
+    acaban resultando para valores grandes en los siguientes coeficientes:
+
+               Algoritmo 1: C = 0.00128 --- Algoritmo 2: C' = 0.00250
+
+      > La cota ajustada del algoritmo 1 es n^2 la cual es una cota superior de t(n) ya que
+     su cociente cuando (n -> Infinito) es un numero real y por tanto existen
+     numeros reales como A (ejemplo) tal que n^2 * A >= t(n).
+
+           ALGORITMO 1  => t(n) = O(n^2)
+
+      > La cota ajustada del algoritmo 2 es n la cual es una cota superior de t(n) ya que
+     su cociente cuando (n -> Infinito) es un numero real y por tanto existen
+     numeros reales como B (ejemplo) tal que n * B >= t(n).
+
+           ALGORITMO 2  => t'(n) = O(n)
+
+      Dadas las anteriores cotas superiores de podemos garantizar que el algoritmo 2 es más eficiente
+      que el algoritmo 1 ya que el crecimiento de t'(n) es mucho menor que el de t(n) para numeros
+      grandes. (En el caso de que n -> Infinito t(n) es infinitamente mas grande que t'(n))
+
+      En síntesis, el algoritmo 2 consigue la misma salida que el algoritmo 1 pero para vectores grandes
+      la consigue en mucho menos tiempo.
+
+---------------------------------------------------------------------------------------------------------
