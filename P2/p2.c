@@ -264,7 +264,7 @@ int main(int argc, char const *argv[]){
     inicializar_semilla();
     //test_insercion();
     //test_shell();
-    //print_ins();
+    print_ins();
     print_shell();
     return 0;
 }
