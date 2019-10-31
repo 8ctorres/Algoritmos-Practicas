@@ -237,13 +237,13 @@ void print_shell(){
     printf("\n");
 
     printf("\tVector de entrada ordenado al revés:\n");
-    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^1.0\t\t    t(n)/n^1.08\t\t"
+    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^1.0\t\t    t(n)/n^1.09\t\t"
            "     t(n)/n^1.3\n");
     for (n=500; n<=2048000; n*=2){
         tiempo = medir_tiempo(ord_shell, descendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
                n, tiempo, tiempo/n,
-               tiempo/(pow(n,1.08)), tiempo/(pow(n,1.3)));
+               tiempo/(pow(n,1.09)), tiempo/(pow(n,1.3)));
     }
     printf("\n");
 
@@ -264,7 +264,7 @@ int main(int argc, char const *argv[]){
     inicializar_semilla();
     //test_insercion();
     //test_shell();
-    print_ins();
+    //print_ins();
     print_shell();
     return 0;
 }
