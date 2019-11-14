@@ -3,6 +3,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <math.h>
+#define MAXSIZE 2048000
 
 void inicializar_semilla() {
     srand(time(NULL));
@@ -46,49 +47,80 @@ void printv(int v[], int n) {
     printf("]\n");
 }
 
-void ord_ins(int vec[], int n) {
-    int i;// iterador
-    int x;// variable temporal
-    int j;// iterador
-    for (i  = 1; i < n; i++) {
-        x = vec[i];
-        j = i-1;
-        for (;j >= 0 && vec[j] > x;j--) vec[j+1] = vec[j];
-        vec[j+1] = x;
+typedef struct {
+    int vec[MAXSIZE];
+    int ultimo;
+} monticulo;
+
+/*Montículos en C
+    Dada una posición i del vector del montículo
+    El HijoIzquierdo es 2*i +1
+    El HijoDerecho es 2*i +2
+    El Padre es (i-1) div 2
+*/
+
+void intercambiar(int *a, int *b){
+    int tmp;
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+void hundir(monticulo *M, int i){
+    int HijoDer, HijoIzq, j;
+    do
+    {
+        HijoIzq = 2*i +1;
+        HijoDer = 2*i +2;
+        j = i;
+        if (HijoDer <= M->ultimo && M->vec[HijoDer] < M->vec[i]){
+            i = HijoDer;
+        }
+        if (HijoIzq <= M->ultimo && M->vec[HijoIzq] < M->vec[i]){
+            i = HijoIzq;
+        }
+        intercambiar(&(M->vec[i]),&(M->vec[j]));
+    } while (i!=j);
+}
+
+void crearMonticulo(int v[],int n, monticulo * m) {
+    int i;
+    m->ultimo = -1;
+
+    for (i = 0; (i < n) && (m->ultimo < MAXSIZE); i++)
+        m->vec[++m->ultimo] = v[i];
+
+    for (i = (m->ultimo-1) / 2 ; i >= 0; i--)
+        hundir(m,i);
+}
+
+int consultarMenor(const monticulo *M){
+    return M->vec[0];
+}
+
+int quitarMenor(monticulo *M){
+    int x = M->vec[0];
+    M->vec[0]=M->vec[M->ultimo--];
+    hundir(M, 0);
+    return x;
+}
+
+void heapsort(int v[], int tam){
+    monticulo M;
+    crearMonticulo(v,tam,&M);
+    for (int i = 0; i < tam; i++)
+    {
+        v[i]=quitarMenor(&M);
     }
 }
 
-void ord_shell(int vec[], int n){
-    int incremento = n;
-    int tmp = 0;
-    int j = 0;
-    int seguir;
-    int i; //Iterador
-    do{
-        incremento /= 2;
-        for (i = incremento ; i < n; i++){
-            tmp = vec[i];
-            j = i;
-            seguir = 1;
-            while ((j-incremento >= 0) && seguir){
-                if (tmp < vec[j-incremento]){
-                    vec[j] = vec[j-incremento];
-                    j=j-incremento;
-                }
-                else seguir=0;
-            }
-            vec[j]=tmp;
-        }
-    } while (incremento > 1);
-}
-
-void test_insercion(){
+void test_heapsort(){
     int vector[25];
     printf("Test algoritmo ordenación:\n");
     printf("\tVector ordenado:\n");
     ascendente(vector,25);
     printv(vector,25);
-    ord_ins(vector,25);
+    heapsort(vector,25);
     printf("\tDespués de aplicar el algoritmo:\n");
     printv(vector,25);
     printf("\n");
@@ -96,7 +128,7 @@ void test_insercion(){
     printf("\tVector ordenado al revés:\n");
     descendente(vector,25);
     printv(vector,25);
-    ord_ins(vector,25);
+    heapsort(vector,25);
     printf("\tDespués de aplicar el algoritmo:\n");
     printv(vector,25);
     printf("\n");
@@ -104,35 +136,7 @@ void test_insercion(){
     printf("\tVector aleatorio:\n");
     aleatorio(vector,25);
     printv(vector,25);
-    ord_ins(vector,25);
-    printf("\tDespués de aplicar el algoritmo:\n");
-    printv(vector,25);
-    printf("\n");
-}
-
-void test_shell(){
-    int vector[25];
-    printf("Test algoritmo shell:\n");
-    printf("\tVector ordenado:\n");
-    ascendente(vector,25);
-    printv(vector,25);
-    ord_shell(vector,25);
-    printf("\tDespués de aplicar el algoritmo:\n");
-    printv(vector,25);
-    printf("\n");
-
-    printf("\tVector ordenado al revés:\n");
-    descendente(vector,25);
-    printv(vector,25);
-    ord_shell(vector,25);
-    printf("\tDespués de aplicar el algoritmo:\n");
-    printv(vector,25);
-    printf("\n");
-
-    printf("\tVector aleatorio:\n");
-    aleatorio(vector,25);
-    printv(vector,25);
-    ord_shell(vector,25);
+    heapsort(vector,25);
     printf("\tDespués de aplicar el algoritmo:\n");
     printv(vector,25);
     printf("\n");
@@ -178,83 +182,83 @@ double medir_tiempo(void (* algoritmo)(int v[], int tam),
     return t_test;
 }
 
-void print_ins(){
-    int k = 1000; //ejecuciones del algoritmo para tiempos pequeños
-    double tiempo = 0.0;
-    int n;
-    //Algoritmo 1
-    printf("Ordenación por inserción: \n");
-    printf("\tVector de entrada ordenado:\n");
-    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^0.8\t\t         t(n)/n\t\t"
-           "     t(n)/n^1.2\n");
-    for (n=500; n<=2048000; n*=2){
-        tiempo = medir_tiempo(ord_ins, ascendente, n, k);
-        printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-        n, tiempo, tiempo/(pow(n,0.8)), tiempo/n, tiempo/(pow(n,1.2)));
-    }
-    printf("\n");
-
-    printf("\tVector de entrada ordenado al revés:\n");
-    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^1.8\t\t     t(n)/n^2.0\t\t"
-           "     t(n)/n^2.2\n");
-    for (n=500; n<=64000; n*=2){
-        tiempo = medir_tiempo(ord_ins, descendente, n, k);
-        printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-        n, tiempo, tiempo/(pow(n,1.8)), tiempo/(pow(n,2)),
-        tiempo/(pow(n,2.2)));
-    }
-    printf("\n");
-
-    printf("\tVector de entrada aleatorio:\n");
-    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^1.8\t\t     t(n)/n^2.0\t\t"
-           "     t(n)/n^2.2\n");
-    for (n=500; n<=128000; n*=2){
-        tiempo = medir_tiempo(ord_ins, aleatorio, n, k);
-        printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-        n, tiempo, tiempo/(pow(n,1.8)),
-        tiempo/(pow(n,2)), tiempo/(pow(n,2.2)));
-    }
-    printf("\n");
-    printf("\n\n (*) Tiempo promedio en %d ejecuciones del algoritmo\n\n",k);
-
-}
-
-void print_shell(){
+void print_crearmonticulo(){
     int k = 1000;
     double tiempo = 0.0;
     int n; //Iterador
-        //Algoritmo Shell
-    printf("Ordenación de Shell: \n");
+        //Creación de Monticulos
+    printf("Creación de Montículos: \n");
     printf("\tVector de entrada ordenado:\n");
-    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^0.8"
-    "\t  t(n)/(n^1.01*log2(n))\t\t     t(n)/n^1.2\n");
-    for (n=500; n<=2048000; n*=2){
-        tiempo = medir_tiempo(ord_shell, ascendente, n, k);
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.04\t\t"
+           "     t(n)/n^1.2\n");
+    for (n=500; n<=MAXSIZE; n*=2){
+        tiempo = medir_tiempo(heapsort, ascendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.01)*log2(n)),
+               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.04)),
                tiempo/(pow(n,1.2)));
     }
     printf("\n");
 
     printf("\tVector de entrada ordenado al revés:\n");
-    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^1.0\t\t    t(n)/n^1.09\t\t"
-           "     t(n)/n^1.3\n");
-    for (n=500; n<=2048000; n*=2){
-        tiempo = medir_tiempo(ord_shell, descendente, n, k);
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.04\t\t"
+           "     t(n)/n^1.2\n");
+    for (n=500; n<=MAXSIZE; n*=2){
+        tiempo = medir_tiempo(heapsort, descendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/n,
-               tiempo/(pow(n,1.09)), tiempo/(pow(n,1.3)));
+               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.04)),
+               tiempo/(pow(n,1.2)));
     }
     printf("\n");
 
     printf("\tVector de entrada aleatorio:\n");
-    printf("\t      n\t\t\t\t  t(n)\t\t     t(n)/n^1.0\t\t    t(n)/n^1.24\t\t"
-           "     t(n)/n^1.4\n");
-    for (n=500; n<=2048000; n*=2){
-        tiempo = medir_tiempo(ord_shell, aleatorio, n, k);
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.06\t\t"
+           "     t(n)/n^1.2\n");
+    for (n=500; n<=MAXSIZE; n*=2){
+        tiempo = medir_tiempo(heapsort, aleatorio, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-        n, tiempo, tiempo/n, tiempo/(pow(n,1.24)),
-               tiempo/(pow(n,1.4)));
+               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.06)),
+               tiempo/(pow(n,1.2)));
+    }
+    printf("\n");
+    printf("\n\n (*) Tiempo promedio en %d ejecuciones del algoritmo\n\n",k);
+}
+
+void print_heapsort(){
+    int k = 1000;
+    double tiempo = 0.0;
+    int n; //Iterador
+        //Algoritmo Monticulos
+    printf("Ordenación por Montículos: \n");
+    printf("\tVector de entrada ordenado:\n");
+    printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
+    "\t       t(n)/(n*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
+    for (n=500; n<=MAXSIZE; n*=2){
+        tiempo = medir_tiempo(heapsort, ascendente, n, k);
+        printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
+               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(n*log2(n)),
+               tiempo/(pow(n,1.2)*log2(n)));
+    }
+    printf("\n");
+
+    printf("\tVector de entrada ordenado al revés:\n");
+    printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
+    "\t       t(n)/(n*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
+    for (n=500; n<=MAXSIZE; n*=2){
+        tiempo = medir_tiempo(heapsort, descendente, n, k);
+        printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
+               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(n*log2(n)),
+               tiempo/(pow(n,1.2)*log2(n)));
+    }
+    printf("\n");
+
+    printf("\tVector de entrada aleatorio:\n");
+    printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
+    "\t       t(n)/(n*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
+    for (n=500; n<=MAXSIZE; n*=2){
+        tiempo = medir_tiempo(heapsort, aleatorio, n, k);
+        printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
+               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(n*log2(n)),
+               tiempo/(pow(n,1.2)*log2(n)));
     }
     printf("\n");
     printf("\n\n (*) Tiempo promedio en %d ejecuciones del algoritmo\n\n",k);
@@ -262,7 +266,9 @@ void print_shell(){
 
 int main(int argc, char const *argv[]){
     inicializar_semilla();
-    //test_insercion();
-    //test_shell();
+    printf("MAXSIZE = %d\n", MAXSIZE);
+    test_heapsort();
+    print_crearmonticulo();
+    print_heapsort();
     return 0;
 }
