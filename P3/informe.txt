@@ -1,0 +1,32 @@
+
+ * Algoritmos
+ * Práctica 2
+ * Carlos Torres (carlos.torres)
+ * Daniel Vega (d.s.vega)
+ * Grupo 4.3
+
+ * Informe Práctica 2: Algoritmos de ordenación:
+	En este experimento se evaluará empíricamente el rendimiento de un algoritmo de creación de montículos de mínimos a partir de vectores arbitrarios
+	y el rendimiento del algoritmo de ordenación por montículos que parte
+	del resultado de la funcion anterior.
+
+	1.Características de la máquina: ----------------- 
+                                     OS: Ubuntu 18.04.3 LTS x86_64 
+                                     Kernel: 4.15.0-66-generic 
+                                     CPU: Intel i5-7200U (4) @ 3.100GHz 
+                                     Memoria Principal: 7886MiB
+                                     -----------------
+                                     Compilador: gcc 7.4.0
+
+    2.Unidades de medida: Todos los tiempos se expresarán en microsegundos
+
+	3.Método: Se determinarán los tiempos de ejecución de cada uno de los
+	algoritmos, para vectores ordenados, ordenados al revés, y aleatorios,
+	y con tamaños variables empezando en 500 elementos y siguiendo una
+	progresión geométrica de razón 2.
+
+	Se usarán 2 cotas (subestimada y sobreestimada) para afianzar los resultados
+	de la cota ajustada.
+
+	K = 1000 <- En caso de que el tiempo de una sola ejecución del algoritmo sea
+	menor a 500, se calcula una media de K ejecuciones del algoritmo
