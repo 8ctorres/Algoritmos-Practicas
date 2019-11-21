@@ -6,9 +6,8 @@
  * Grupo 4.3
 
  * Informe Práctica 2: Algoritmos de ordenación:
-	En este experimento se evaluará empíricamente el rendimiento de un algoritmo de creación de montículos de mínimos a partir de vectores arbitrarios
-	y el rendimiento del algoritmo de ordenación por montículos que parte
-	del resultado de la funcion anterior.
+	En este experimento se evaluará empíricamente el rendimiento de un algoritmo de creación de montículos de mínimos a partir de vectores aleatorios
+	y el rendimiento del algoritmo de ordenación por montículos usando el montículo creado por el algoritmo anterior.
 
 	1.Características de la máquina: ----------------- 
                                      OS: Ubuntu 18.04.3 LTS x86_64 
@@ -30,3 +29,39 @@
 
 	K = 1000 <- En caso de que el tiempo de una sola ejecución del algoritmo sea
 	menor a 500, se calcula una media de K ejecuciones del algoritmo
+
+
+  4. Resultados:
+
+     t(n) es la función de tiempo del algoritmo en función del número de elementos
+     del vector de entrada
+
+INSERTE AQUI LAS TABLAS BRUH
+
+	5. Conclusión: Los cocientes del tiempo en función de n entre cotas ajustadas tienden a una
+	constante
+
+	> Para un vector ordenado, la cota ajustada del algoritmo de creación de montículos es O(n^1.065), cota superior
+	  de t(n). Para un vector ordenado, la cota ajustada del algoritmo de ordenación por montículos es O(n^0.995*log2(n)), cota superior
+	  de t(n)
+
+      CREACIÓN DE MONTÍCULOS => t(n) = O(n^1.065)
+		  ORDENACIÓN POR MONTÍCULOS => t(n) = O(n^0.995*log2(n))
+
+	> Para un vector ordenado al revés (de forma decreciente), la cota ajustada del algoritmo de creación de montículos
+	  es O(n^1.065), cota superior de t(n). Para un vector ordenado al revés, la cota ajustada del algoritmo de
+	  ordenación por montículos es O(n*log2(n)), cota superior de t(n)
+
+	  	CREACIÓN DE MONTÍCULOS => t(n) = O(n^1.065)
+	  	ORDENACIÓN POR MONTÍCULOS => t(n) = O(n*log2(n))
+
+	> Para un vector generado aleatoriamente, la cota ajustada del algoritmo de ordenación por inserción es
+	  O(n^1.11), cota superior de t(n). Para un vector generado aleatoriamente, la cota superior del algoritmo
+	  de ordenación por montículos es O(n^1.05*log2(n)), cota superior de t(n)
+
+	     CREACIÓN DE MONTÍCULOS => t(n) = O(n^1.11)
+       ORDENACIÓN POR MONTÍCULOS => t(n) = O(n^1.05*log2(n))
+
+    En síntesis:
+
+-----------------------------------------------------------------------------------------------------------------------	
