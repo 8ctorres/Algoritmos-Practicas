@@ -319,8 +319,8 @@ void print_heapsort(){
 
     printf("\tVector de entrada aleatorio:\n");
     printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
-    "\t       t(n)/(n^1.05*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
-    for (n=500; n<=1024000; n*=2){
+    "\t       t(n)/(n^1.02*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
+    for (n=500; n<=512000; n*=2){
         tiempo = medir_tiempo(heapsort, aleatorio, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
                n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(pow(n,1.02)*log2(n)),
@@ -332,9 +332,9 @@ void print_heapsort(){
 
 int main(int argc, char const *argv[]){
     inicializar_semilla();
-    //test_crearmonticulo();
-    //test_heapsort();
-    //print_crearmonticulo();
+    test_crearmonticulo();
+    test_heapsort();
+    print_crearmonticulo();
     print_heapsort();
     return 0;
 }
