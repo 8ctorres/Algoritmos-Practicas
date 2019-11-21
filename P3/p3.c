@@ -42,7 +42,7 @@ void printv(int v[], int n) {
         printf("%3d", v[i]);
         if (i != n - 1){
             printf(",");
-        }   
+        }
     }
     printf("]\n");
 }
@@ -106,13 +106,72 @@ int quitarMenor(monticulo *M){
 }
 
 void heapsort(int v[], int tam){
+    int i;
     monticulo M;
     crearMonticulo(v,tam,&M);
-    for (int i = 0; i < tam; i++)
+    for (i = 0; i < tam; i++)
     {
         v[i]=quitarMenor(&M);
     }
 }
+
+int esMonticulo(monticulo *M){
+  int i;
+  for (i = 1; i<=M->ultimo; i++)
+    if(M->vec[i]>M->vec[(i-1)/2])
+      return 0;
+  return 1;
+}
+
+int estaOrdenado(int v[], int tam){
+  int i;
+  for (i=1; i<tam; i++)
+    if(v[i-1]>v[i])
+      return 0;
+  return 1;
+}
+
+void test_crearmonticulo(){
+  int vector[25];
+  monticulo* M;
+  M = malloc(sizeof(monticulo));
+  printf("Test algoritmo creación montículos:\n");
+  printf("\tVector ordenado:\n");
+  ascendente(vector,25);
+  printv(vector,25);
+  crearMonticulo(vector,25,M);
+  printf("\tMontículo creado:\n");
+  printv(M->vec,25);
+  if (esMonticulo(M)) printf("ERROR: Creación de montículo\n");
+  else printf("Montículo creado correctamente\n");
+  printf("\n");
+  free(M);
+
+  M = malloc(sizeof(monticulo));
+  printf("\tVector ordenado al revés:\n");
+  descendente(vector,25);
+  printv(vector,25);
+  crearMonticulo(vector,25,M);
+  printf("\tMonticulo creado:\n");
+  printv(M->vec,25);
+  if (esMonticulo(M)) fprintf(stderr,"ERROR: Creación de montículo\n");
+  else printf("Montículo creado correctamente\n");
+  printf("\n");
+  free(M);
+
+  M = malloc(sizeof(monticulo));
+  printf("\tVector aleatorio:\n");
+  aleatorio(vector,25);
+  printv(vector,25);
+  crearMonticulo(vector,25,M);
+  printf("\tMonticulo creado:\n");
+  printv(M->vec,25);
+  if (esMonticulo(M)) fprintf(stderr,"ERROR: Creación de montículo\n");
+  else printf("Montículo creado correctamente\n");
+  printf("\n");
+  free(M);
+}
+
 
 void test_heapsort(){
     int vector[25];
@@ -123,6 +182,8 @@ void test_heapsort(){
     heapsort(vector,25);
     printf("\tDespués de aplicar el algoritmo:\n");
     printv(vector,25);
+    if (estaOrdenado(vector,25)) printf("Vector ordenado correctamente\n");
+    else printf("ERROR: Ordenación del vector");
     printf("\n");
 
     printf("\tVector ordenado al revés:\n");
@@ -131,6 +192,8 @@ void test_heapsort(){
     heapsort(vector,25);
     printf("\tDespués de aplicar el algoritmo:\n");
     printv(vector,25);
+    if (estaOrdenado(vector,25)) printf("Vector ordenado correctamente\n");
+    else printf("ERROR: Ordenación del vector");
     printf("\n");
 
     printf("\tVector aleatorio:\n");
@@ -139,6 +202,8 @@ void test_heapsort(){
     heapsort(vector,25);
     printf("\tDespués de aplicar el algoritmo:\n");
     printv(vector,25);
+    if (estaOrdenado(vector,25)) printf("Vector ordenado correctamente\n");
+    else printf("ERROR: Ordenación del vector");
     printf("\n");
 }
 
@@ -153,8 +218,8 @@ double medir_tiempo(void (* algoritmo)(int v[], int tam),
     int i; //Iterador
     //f_init es la función de inicialización
     //algoritmo es la función de ordenación
-
-    int *v = malloc(tam*sizeof(int));
+    int *v;
+    v = malloc(tam*sizeof(int));
     f_init(v, tam); //genera un vector de [tam] enteros
     t_inicio = microsegundos();
     algoritmo(v, tam); //aplica el algoritmo indicado
@@ -266,7 +331,7 @@ void print_heapsort(){
 
 int main(int argc, char const *argv[]){
     inicializar_semilla();
-    printf("MAXSIZE = %d\n", MAXSIZE);
+    test_crearmonticulo();
     test_heapsort();
     print_crearmonticulo();
     print_heapsort();
