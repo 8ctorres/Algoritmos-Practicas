@@ -255,34 +255,34 @@ void print_crearmonticulo(){
         //Creación de Monticulos
     printf("Creación de Montículos: \n");
     printf("\tVector de entrada ordenado:\n");
-    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.06\t\t"
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.9\t\t    t(n)/n^1.065\t\t"
            "     t(n)/n^1.2\n");
-    for (n=500; n<=MAXSIZE; n*=2){
+    for (n=500; n<=512000; n*=2){
         tiempo = medir_tiempo(heapsort, ascendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.06)),
+               n, tiempo, tiempo/(pow(n,0.9)), tiempo/(pow(n,1.065)),
                tiempo/(pow(n,1.2)));
     }
     printf("\n");
 
     printf("\tVector de entrada ordenado al revés:\n");
-    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.06\t\t"
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.065\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=MAXSIZE; n*=2){
         tiempo = medir_tiempo(heapsort, descendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.06)),
+               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.065)),
                tiempo/(pow(n,1.2)));
     }
     printf("\n");
 
     printf("\tVector de entrada aleatorio:\n");
-    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.15\t\t"
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.11\t\t"
            "     t(n)/n^1.2\n");
-    for (n=500; n<=MAXSIZE; n*=2){
+    for (n=500; n<=512000; n*=2){
         tiempo = medir_tiempo(heapsort, aleatorio, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.15)),
+               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.105)),
                tiempo/(pow(n,1.2)));
     }
     printf("\n");
