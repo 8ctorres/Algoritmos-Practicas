@@ -62,6 +62,7 @@ INSERTE AQUI LAS TABLAS BRUH
 	     CREACIÓN DE MONTÍCULOS => t(n) = O(n^1.11)
        ORDENACIÓN POR MONTÍCULOS => t(n) = O(n^1.05*log2(n))
 
-    En síntesis:
+    Cabe destacar lo estable que son los algoritmo de creación de montículos y ordenación por montículos, ya que su complejidad apenas varía
+    independientemente de si el vector de entrada estaba inicialmente ordenado, ordenado al revés o de forma aleatoria.
 
 -----------------------------------------------------------------------------------------------------------------------	
