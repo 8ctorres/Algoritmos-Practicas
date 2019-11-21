@@ -255,7 +255,7 @@ void print_crearmonticulo(){
         //Creación de Monticulos
     printf("Creación de Montículos: \n");
     printf("\tVector de entrada ordenado:\n");
-    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.9\t\t    t(n)/n^1.065\t\t"
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.9\t\t   t(n)/n^1.065\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=512000; n*=2){
         tiempo = medir_tiempo(heapsort, ascendente, n, k);
@@ -266,7 +266,7 @@ void print_crearmonticulo(){
     printf("\n");
 
     printf("\tVector de entrada ordenado al revés:\n");
-    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.065\t\t"
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t   t(n)/n^1.065\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=MAXSIZE; n*=2){
         tiempo = medir_tiempo(heapsort, descendente, n, k);
