@@ -297,22 +297,22 @@ void print_heapsort(){
     printf("Ordenación por Montículos: \n");
     printf("\tVector de entrada ordenado:\n");
     printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
-    "\t       t(n)/(n^0.99*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
-    for (n=500; n<=MAXSIZE; n*=2){
+    "\t       t(n)/(n^0.98*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
+    for (n=500; n<=256000; n*=2){
         tiempo = medir_tiempo(heapsort, ascendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(pow(n,0.99)*log2(n)),
+               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(pow(n,0.98)*log2(n)),
                tiempo/(pow(n,1.2)*log2(n)));
     }
     printf("\n");
 
     printf("\tVector de entrada ordenado al revés:\n");
     printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
-    "\t       t(n)/(n*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
-    for (n=500; n<=MAXSIZE; n*=2){
+    "\t       t(n)/(n^0.98*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
+    for (n=500; n<=256000; n*=2){
         tiempo = medir_tiempo(heapsort, descendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(pow(n,1.00)*log2(n)),
+               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(pow(n,0.98)*log2(n)),
                tiempo/(pow(n,1.2)*log2(n)));
     }
     printf("\n");
@@ -320,10 +320,10 @@ void print_heapsort(){
     printf("\tVector de entrada aleatorio:\n");
     printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
     "\t       t(n)/(n^1.05*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
-    for (n=500; n<=MAXSIZE; n*=2){
+    for (n=500; n<=1024000; n*=2){
         tiempo = medir_tiempo(heapsort, aleatorio, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(pow(n,1.05)*log2(n)),
+               n, tiempo, tiempo/(pow(n,0.8)*log2(n)), tiempo/(pow(n,1.02)*log2(n)),
                tiempo/(pow(n,1.2)*log2(n)));
     }
     printf("\n");
@@ -332,9 +332,9 @@ void print_heapsort(){
 
 int main(int argc, char const *argv[]){
     inicializar_semilla();
-    test_crearmonticulo();
-    test_heapsort();
-    print_crearmonticulo();
+    //test_crearmonticulo();
+    //test_heapsort();
+    //print_crearmonticulo();
     print_heapsort();
     return 0;
 }
