@@ -3,7 +3,19 @@
 #include <sys/time.h>
 #include <time.h>
 #include <math.h>
-#define MAXSIZE 2048000
+#define MAXSIZE 2048
+#define true 1
+#define false 0
+typedef char byte;
+
+/*
+    Algoritmos
+    Práctica 4
+    Carlos Torres - carlos.torres@udc.es
+    Daniel Sergio Vega - d.s.vega@udc.es
+*/
+
+typedef int ** matriz;;
 
 void inicializar_semilla() {
     srand(time(NULL));
@@ -30,54 +42,120 @@ void printv(int v[], int n) {
     printf("]\n");
 }
 
-typedef struct {
-    int vec[MAXSIZE];
-    int ultimo;
-} monticulo;
-
-void intercambiar(int *a, int *b){
-    int tmp;
-    tmp = *a;
-    *a = *b;
-    *b = tmp;
+matriz crearMatriz(int n) {
+    int i;
+    matriz aux;
+    if ((aux = malloc(n*sizeof(int *))) == NULL)
+        return NULL;
+    for (i=0; i<n; i++)
+        if ((aux[i] = malloc(n*sizeof(int))) == NULL)
+            return NULL;
+    return aux;
 }
 
-void test_dijkstra(){
-    int vector[25];
-    printf("Test algoritmo ordenación:\n");
-    printf("\tVector ordenado:\n");
-    ascendente(vector,25);
-    printv(vector,25);
-    heapsort(vector,25);
-    printf("\tDespués de aplicar el algoritmo:\n");
-    printv(vector,25);
-    if (estaOrdenado(vector,25)) printf("Vector ordenado correctamente\n");
-    else printf("ERROR: Ordenación del vector");
-    printf("\n");
-
-    printf("\tVector ordenado al revés:\n");
-    descendente(vector,25);
-    printv(vector,25);
-    heapsort(vector,25);
-    printf("\tDespués de aplicar el algoritmo:\n");
-    printv(vector,25);
-    if (estaOrdenado(vector,25)) printf("Vector ordenado correctamente\n");
-    else printf("ERROR: Ordenación del vector");
-    printf("\n");
-
-    printf("\tVector aleatorio:\n");
-    aleatorio(vector,25);
-    printv(vector,25);
-    heapsort(vector,25);
-    printf("\tDespués de aplicar el algoritmo:\n");
-    printv(vector,25);
-    if (estaOrdenado(vector,25)) printf("Vector ordenado correctamente\n");
-    else printf("ERROR: Ordenación del vector");
-    printf("\n");
+/* Inicializacion pseudoaleatoria [1..MAXSIZE] de un grafo completo
+no dirigido con n nodos, representado por su matriz de adayencia */
+void iniMatriz(matriz m, int n) {
+    int i, j;
+    for (i=0; i<n; i++)
+        for (j=i+1; j<n; j++)
+            m[i][j] = rand() % MAXSIZE + 1;
+    
+    for (i=0; i<n; i++)
+        for (j=0; j<=i; j++)
+            if (i==j)
+                m[i][j] = 0;
+            else
+            m[i][j] = m[j][i];
 }
 
-double medir_tiempo(void (* algoritmo)(int v[], int tam),
-                    void (* f_init)(int v[], int tam), int tam, int k){
+void liberarMatriz(matriz m, int n) {
+    int i;
+    for (i=0; i<n; i++)
+        free(m[i]);
+    free(m);
+}
+
+void printm(matriz m, int n) {
+    int i,j;
+    for (i = 0; i < n; i++) {
+        printf("[");
+        for (j = 0; j < n; j++) {
+            printf(" %2i ",m[i][j]);
+        }
+        printf("]\n");
+    }
+}
+
+byte igualaref(matriz m) {
+    int i,j;
+    int r[][5] =
+    {{0,1,3,4,6},
+    {1,0,2,5,5},
+    {3,2,0,7,5},
+    {4,5,7,0,3},
+    {6,5,5,3,0}};
+    for (i = 0; i < 5; i++)
+        for (j = 0; j < 5; j++) if (m[i][j] == r[i][j]) continue; else return false;
+    return true;
+ }
+
+ void test_dijkstra(){
+    matriz m,d;
+    iniMatriz(m,5);
+    iniMatriz(d,5);    
+    m =
+    {{0,1,8,4,7},
+    {1,0,2,6,5},
+    {8,2,0,9,5},
+    {4,6,9,0,3},
+    {7,5,5,3,0}};
+    printf("Test de funcionamiento del algoritmo de Dijkstra:\n");
+    printf("Matriz de adyacencia del grafo:");
+    printm(m,5);
+    printf("Tabla de distancias mínimas:");
+    dijkstra(m,d,5);
+    printm(d,5);
+    if (igualaref(m))
+        printf("Es correcto\n");
+ }
+
+void dijkstra(matriz grafo, matriz distancias, int tam){
+    byte* noVisitados = malloc(tam*sizeof(byte));
+    int i,j,m,v,w, dist_min;
+    for (m=0; m<tam; i++){ //Bucle principal
+        for (i=0; i<tam; i++){ 
+            noVisitados[i] = true; //Inicialización del conjunto de noVisitados
+            distancias[m][i] = grafo[m][i]; //Se supone que la distancia entre dos nodos es la de la arista que los une
+        }
+        noVisitados[m] = false;
+
+        for(i=0; i<(tam-2);i++){ //repetir n-2 veces
+            //Buscar el nodo no visitado que minimiza la distancia al nodo M
+            for(j=0; j<tam; j++){
+                dist_min = -1;
+                v = -1;
+                if (distancias[m][j] < dist_min){
+                    dist_min = distancias[m][j];
+                    v = j;
+                }
+                //v es el índice del nodo que minimiza la distancia al nodo m
+            }
+            noVisitados[v] = false; //se quita el nodo v del conjunto de no visitados
+            for(w=0; w<tam; w++){ //para cada w en el conjunto noVisitados:
+                if(noVisitados[w]){
+                    if (distancias[m][w]> (distancias[m][v] + grafo[v][w])){
+                        distancias[m][w] = (distancias[m][v] + grafo[v][w]); //si se encuentra una distancia menor al camino directo, se actualiza
+                    }
+                }
+            } //fin para cada w en el conjunto noVisitados
+        } //fin repetir n-2
+    } //Fin bucle principal
+} //fin procedimiento
+
+double medir_tiempo(
+    void (* algoritmo)(matriz grafo, matriz distancias, int tam),
+    int tam, int k){
 //K es el número de repeticiones en caso de tener que medir tiempos pequeños
     double t_inicio = 0.0; //tiempo de inicio
     double t_fin = 0.0; //tiempo de fin
@@ -86,68 +164,53 @@ double medir_tiempo(void (* algoritmo)(int v[], int tam),
     double t_init = 0.0; //tiempo de solo inicialización
     int i; //Iterador
     //f_init es la función de inicialización
-    //algoritmo es la función de ordenación
-    int *v;
-    v = malloc(tam*sizeof(int));
-    f_init(v, tam); //genera un vector de [tam] enteros
+    //algoritmo es la función del algoritmo
+    matriz mat;
+    matriz distancias; //matrices iniciales y de salida
+    mat = crearMatriz(tam);
+    distancias = crearMatriz(tam);
+    iniMatriz(mat, tam);
     t_inicio = microsegundos();
-    algoritmo(v, tam); //aplica el algoritmo indicado
-                       //por parámetro al vector generado
+    printf("lulz\n");
+    algoritmo(mat, distancias, tam); //aplica el algoritmo indicado
+                       //por parámetro a la matriz generada
     t_fin = microsegundos();
     t_test = t_fin - t_inicio;
     if (t_test < 500){
         printf("(*)");
         t_inicio = microsegundos();
         for (i = 0; i < k; i++){
-            f_init(v, tam);
-            algoritmo(v,tam);
+            iniMatriz(mat, tam);
+            algoritmo(mat, distancias, tam);
         }
         t_fin = microsegundos();
         t_test_init = t_fin-t_inicio;
         t_inicio = microsegundos();
         for (i = 0; i<k; i++){
-            f_init(v, tam);
+            iniMatriz(mat, tam);
         }
         t_fin = microsegundos();
         t_init = t_fin - t_inicio;
         t_test = (t_test_init - t_init) /k;
     }
-    free(v); return t_test;
+    liberarMatriz(mat, tam);
+    liberarMatriz(distancias, tam);
+    return t_test;
 }
 
 void print_dijkstra(){
     int k = 1000;
     double tiempo = 0.0;
     int n; //Iterador //Algoritmo Dijkstra:
-    printf("Ordenación por Montículos: \n\tVector de entrada ordenado:\n");
-    printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
-    "\t       t(n)/(n^0.98*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
-    for (n=500; n<=256000; n*=2){
-        tiempo = medir_tiempo(heapsort, ascendente, n, k);
+    printf("\n\tAlgoritmo de Dijkstra:\n");
+    printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)"
+            "\t       t(n)/(n^0.98)\t   t(n)/(n^1.2)\n");
+    for (n=50; n<=2000; n*=2){
+        tiempo = medir_tiempo(dijkstra, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)*log2(n)),
-               tiempo/(pow(n,0.98)*log2(n)),
-               tiempo/(pow(n,1.2)*log2(n)));
-    }
-    printf("\n\tVector de entrada ordenado al revés:\n");
-    printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
-    "\t       t(n)/(n^0.98*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
-    for (n=500; n<=256000; n*=2){
-        tiempo = medir_tiempo(heapsort, descendente, n, k);
-        printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)*log2(n)),
-               tiempo/(pow(n,0.98)*log2(n)),
-               tiempo/(pow(n,1.2)*log2(n)));
-    }
-    printf("\n\tVector de entrada aleatorio:\n");
-    printf("\t       n\t\t\t   t(n)\t   t(n)/(n^0.8)*log2(n)"
-    "\t       t(n)/(n^1.02*log2(n))\t   t(n)/(n^1.2)*log2(n)\n");
-    for (n=500; n<=512000; n*=2){
-        tiempo = medir_tiempo(heapsort, aleatorio, n, k);
-        printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)*log2(n)),
-               tiempo/(pow(n,1.02)*log2(n)),
-               tiempo/(pow(n,1.2)*log2(n)));
+               n, tiempo, tiempo/(pow(n,0.8)),
+               tiempo/(pow(n,0.98)),
+               tiempo/(pow(n,1.2)));
     }
     printf("\n");
     printf("\n\n (*) Tiempo promedio en %d ejecuciones del algoritmo\n\n",k);
@@ -155,9 +218,6 @@ void print_dijkstra(){
 
 int main(int argc, char const *argv[]){
     inicializar_semilla();
-    test_crearmonticulo();
-    test_heapsort();
-    print_crearmonticulo();
-    print_heapsort();
+    print_dijkstra();
     return 0;
 }
