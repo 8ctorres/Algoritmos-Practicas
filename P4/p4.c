@@ -60,7 +60,7 @@ void iniMatriz(matriz m, int n) {
     for (i=0; i<n; i++)
         for (j=i+1; j<n; j++)
             m[i][j] = rand() % MAXSIZE + 1;
-    
+
     for (i=0; i<n; i++)
         for (j=0; j<=i; j++)
             if (i==j)
@@ -100,31 +100,11 @@ byte igualaref(matriz m) {
     return true;
  }
 
- void test_dijkstra(){
-    matriz m,d;
-    iniMatriz(m,5);
-    iniMatriz(d,5);    
-    m =
-    {{0,1,8,4,7},
-    {1,0,2,6,5},
-    {8,2,0,9,5},
-    {4,6,9,0,3},
-    {7,5,5,3,0}};
-    printf("Test de funcionamiento del algoritmo de Dijkstra:\n");
-    printf("Matriz de adyacencia del grafo:");
-    printm(m,5);
-    printf("Tabla de distancias mínimas:");
-    dijkstra(m,d,5);
-    printm(d,5);
-    if (igualaref(m))
-        printf("Es correcto\n");
- }
-
 void dijkstra(matriz grafo, matriz distancias, int tam){
-    byte* noVisitados = malloc(tam*sizeof(byte));
+    byte* noVisitados = malloc(sizeof(byte) * tam);
     int i,j,m,v,w, dist_min;
-    for (m=0; m<tam; i++){ //Bucle principal
-        for (i=0; i<tam; i++){ 
+    for (m=0; m<tam; m++){ //Bucle principal
+        for (i=0; i<tam; i++){
             noVisitados[i] = true; //Inicialización del conjunto de noVisitados
             distancias[m][i] = grafo[m][i]; //Se supone que la distancia entre dos nodos es la de la arista que los une
         }
@@ -152,6 +132,26 @@ void dijkstra(matriz grafo, matriz distancias, int tam){
         } //fin repetir n-2
     } //Fin bucle principal
 } //fin procedimiento
+
+void test_dijkstra(){
+  int i,j;
+  matriz d,m;
+  d = crearMatriz(5);
+  m = crearMatriz(5);
+  iniMatriz(m,5);
+  iniMatriz(d,5);
+  int temp[][5] = {{0,1,8,4,7},{1,0,2,6,5},{8,2,0,9,5},{4,6,9,0,3},{7,5,5,3,0}};
+  for (i = 0; i < 5; i++)
+    for (j = 0; j < 5; j++) m[i][j] = temp[i][j];
+  printf("Test de funcionamiento del algoritmo de Dijkstra:\n");
+  printf("Matriz de adyacencia del grafo:\n");
+  printm(m,5);
+  printf("Tabla de distancias mínimas:\n");
+  dijkstra(m,d,5);
+  printm(d,5);
+  if (igualaref(m))
+    printf("Es correcto\n");
+}
 
 double medir_tiempo(
     void (* algoritmo)(matriz grafo, matriz distancias, int tam),
@@ -218,6 +218,7 @@ void print_dijkstra(){
 
 int main(int argc, char const *argv[]){
     inicializar_semilla();
+    test_dijkstra();
     print_dijkstra();
     return 0;
 }
