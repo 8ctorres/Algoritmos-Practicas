@@ -137,11 +137,11 @@ void dijkstra(matriz grafo, matriz distancias, int tam){
 void test_dijkstra(){
   int i,j;
   matriz d,m;
+  int temp[][5] = {{0,1,8,4,7},{1,0,2,6,5},{8,2,0,9,5},{4,6,9,0,3},{7,5,5,3,0}};
   d = crearMatriz(5);
   m = crearMatriz(5);
   iniMatriz(m,5);
   iniMatriz(d,5);
-  int temp[][5] = {{0,1,8,4,7},{1,0,2,6,5},{8,2,0,9,5},{4,6,9,0,3},{7,5,5,3,0}};
   for (i = 0; i < 5; i++)
     for (j = 0; j < 5; j++) m[i][j] = temp[i][j];
   printf("Test de funcionamiento del algoritmo de Dijkstra:\n");
