@@ -112,10 +112,10 @@ void dijkstra(matriz grafo, matriz distancias, int tam){
 
         for(i=0; i<(tam-2);i++){ //repetir n-2 veces
             //Buscar el nodo no visitado que minimiza la distancia al nodo M
+            dist_min = -1;
+            v = m;
             for(j=0; j<tam; j++){
-                dist_min = -1;
-                v = -1;
-                if (distancias[m][j] < dist_min){
+               if (noVisitados[j] && (distancias[m][j] < dist_min || dist_min == -1)){
                     dist_min = distancias[m][j];
                     v = j;
                 }
@@ -124,13 +124,14 @@ void dijkstra(matriz grafo, matriz distancias, int tam){
             noVisitados[v] = false; //se quita el nodo v del conjunto de no visitados
             for(w=0; w<tam; w++){ //para cada w en el conjunto noVisitados:
                 if(noVisitados[w]){
-                    if (distancias[m][w]> (distancias[m][v] + grafo[v][w])){
+                    if (distancias[m][w] > (distancias[m][v] + grafo[v][w])){
                         distancias[m][w] = (distancias[m][v] + grafo[v][w]); //si se encuentra una distancia menor al camino directo, se actualiza
-                    }
+                      }
                 }
             } //fin para cada w en el conjunto noVisitados
         } //fin repetir n-2
     } //Fin bucle principal
+    free(noVisitados);
 } //fin procedimiento
 
 void test_dijkstra(){
@@ -149,8 +150,9 @@ void test_dijkstra(){
   printf("Tabla de distancias mínimas:\n");
   dijkstra(m,d,5);
   printm(d,5);
-  if (igualaref(m))
+  if (igualaref(d))
     printf("Es correcto\n");
+  else printf("No es correcto\n");
 }
 
 double medir_tiempo(
@@ -171,7 +173,6 @@ double medir_tiempo(
     distancias = crearMatriz(tam);
     iniMatriz(mat, tam);
     t_inicio = microsegundos();
-    printf("lulz\n");
     algoritmo(mat, distancias, tam); //aplica el algoritmo indicado
                        //por parámetro a la matriz generada
     t_fin = microsegundos();
