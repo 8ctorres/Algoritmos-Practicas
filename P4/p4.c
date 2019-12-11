@@ -241,8 +241,8 @@ void print_dijkstra(){
     double tiempo = 0.0;
     int n; //Iterador //Algoritmo Dijkstra:
     printf("\n\tAlgoritmo de Dijkstra:\n");
-    printf("\t       n\t\t\t   t(n)\t   t(n)/(n^2.8)"
-            "\t       t(n)/(n^2.98)\t   t(n)/(n^3.2)\n");
+    printf("\t       n\t\t\t   t(n)\t\t   t(n)/(n^2.8)"
+            "\t\t  t(n)/(n^2.98)\t\t   t(n)/(n^3.2)\n");
     for (n=8; n<=2000; n*=2){
         tiempo = medir_tiempo(dijkstra, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
