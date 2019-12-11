@@ -6,8 +6,8 @@
  * Grupo 4.3
 
  * Informe Práctica 2: Algoritmos de Dijkstra:
-    En este experimento se evaluará empíricamente el rendimiento de un algoritmo de creación de montículos de mínimos a partir de vectores aleatorios
-    y el rendimiento del algoritmo de ordenación por montículos usando el montículo creado por el algoritmo anterior.
+    En este experimento se evaluará empíricamente el rendimiento del algoritmo de Dijkstra, algoritmo que recorre un grafo y calcula los caminos mínimos
+    de cada nodo a todos los demás.
 
   1.Características de la máquina: ----------------- 
                                      OS: elementary OS i686
@@ -19,16 +19,16 @@
 
   2.Unidades de medida: Todos los tiempos se expresarán en microsegundos
 
-  3.Método: Se determinarán los tiempos de ejecución de cada uno de los
-    algoritmos, para vectores ordenados, ordenados al revés, y aleatorios,
-    y con tamaños variables empezando en 500 elementos y siguiendo una
-    progresión geométrica de razón 2.
+  3.Método: Se determinarán los tiempos de ejecución de l Algoritmos
+    para grafos no dirigidos generados aleatoriamente (usando como representación
+    en memoria la matriz de adyacencia) y con tamaños variables empezando en 8 nodos
+    y siguiendo una progresión geométrica de razón 2, hasta 1024 nodos.
 
     Se usarán 2 cotas (subestimada y sobreestimada) para afianzar los resultados
     de la cota ajustada.
 
     K = 1000 <- En caso de que el tiempo de una sola ejecución del algoritmo sea
-    menor a 500, se calcula una media de K ejecuciones del algoritmo
+    menor a 500 microsegundos, se calcula una media de K ejecuciones del algoritmo
 
 
   4. Resultados:
@@ -36,129 +36,28 @@
      t(n) es la función de tiempo del algoritmo en función del número de elementos
      del vector de entrada
 
-    Creación de Montículos: 
-        Vector de entrada ordenado:
-                                                       Cota subestimada:        Cota estimada:       Cotasobreestimada:
-               n                           t(n)              t(n)/n^0.9            t(n)/n^1.065              t(n)/n^1.2
-    (*)      500                        51.7690          0.192751058678          0.069130026181          0.029874852572
-    (*)     1000                       122.6680          0.244754837653          0.078294505324          0.030812808478
-    (*)     2000                       280.3460          0.299755643169          0.085525853826          0.030651968398
-            4000                       602.0000          0.344939158118          0.087781419706          0.028649991778
-            8000                      1267.0000          0.389041227272          0.088305098385          0.026246332750
-           16000                      2644.0000          0.435064318532          0.088079262442          0.023840615945
-           32000                      5462.0000          0.481633531805          0.086969499125          0.021437380764
-           64000                     11515.0000          0.544129116461          0.087635944169          0.019671975440
-          128000                     24131.0000          0.611063505231          0.087780227480          0.017944169217
-          256000                     50546.0000          0.685915827397          0.087884286251          0.016360585231
-          512000                    105582.0000          0.767797899283          0.087743989334          0.014875306784
-                                                                                     cte=0.0877
-        Vector de entrada ordenado al revés:
-                                                      Cota subestimada:          Cota estimada:      Cotasobreestimada:
-               n                           t(n)              t(n)/n^0.8            t(n)/n^1.065              t(n)/n^1.2
-    (*)      500                        59.3450          0.411346807170          0.079246680518          0.034246810366
-    (*)     1000                       135.6820          0.540159771150          0.086600866333          0.034081777480
-    (*)     2000                       295.0690          0.674682721836          0.090017436177          0.032261725380
-            4000                       617.0000          0.810283827659          0.089968664383          0.029363862005
-            8000                      1300.0000          0.980553654689          0.090605073323          0.026929938891
-           16000                      2703.0000          1.170981569405          0.090044722534          0.024372611535
-           32000                      5603.0000          1.394121547882          0.089214592384          0.021990780743
-           64000                     11831.0000          1.690742521673          0.090040890617          0.020211822964
-          128000                     24741.0000          2.030716387774          0.089999196390          0.018397774257
-          256000                     51488.0000          2.427247431375          0.089522140832          0.016665489106
-          512000                    107744.0000          2.917273358629          0.089540720831          0.015179908072
-         1024000                    225366.0000          3.504680492147          0.089519766905          0.013820649354
-         2048000                    471943.0000          4.215271838315          0.089603123617          0.012597768000
-                                                                                      cte=0.895
-        Vector de entrada aleatorio:
-                                                      Cota subestimada:          Cota estimada:      Cotasobreestimada:
-               n                           t(n)              t(n)/n^0.8             t(n)/n^1.11              t(n)/n^1.2
-    (*)      500                        69.7520          0.483482390998          0.072643173715          0.040252481535
-    (*)     1000                       153.2480          0.610091276730          0.074198446988          0.038494157186
-    (*)     2000                       333.5780          0.762734523059          0.075086049480          0.036472153390
-            4000                       722.0000          0.948176537390          0.075554599386          0.034360953594
-            8000                      1550.0000          1.169121665206          0.075407972241          0.032108773293
-           16000                      3332.0000          1.443474135871          0.075361999376          0.030044225541
-           32000                      7173.0000          1.784764208988          0.075424094468          0.028152752146
-           64000                     15392.0000          2.199637299770          0.075243013954          0.026295357878
-          128000                     33074.0000          2.714680643839          0.075165699880          0.024594316550
-          256000                     71282.0000          3.360376231419          0.075313826716          0.023072354616
-          512000                    152887.0000          4.139563892010          0.075097806487          0.021540044972
-                                                                                     cte=0.0752
-     (*) Tiempo promedio en 1000 ejecuciones del algoritmo
+         Algoritmo de Dijkstra:
 
+                    Tiempos de ejecución    Cota subestimada          Cota ajustada     Cota sobreestimada
 
+           n                   t(n)           t(n)/(n^2.8)          t(n)/(n^2.98)           t(n)/(n^3.2)
+(*)        8                12.9290         0.038274803688         0.026324296527         0.013532186618
+(*)       16               100.2810         0.042626797382         0.025878619660         0.010656699345
+          32               750.0000         0.045776367188         0.024530947781         0.008092194914
+          64              5783.0000         0.050681477256         0.023973799553         0.006335184657
+         128             45551.0000         0.057320504039         0.023933830229         0.005066464638
+         256            359722.0000         0.064997267096         0.023955867522         0.004062329193
+         512           2837693.0000         0.073622323263         0.023951952689         0.003253677752
+        1024          22712186.0000         0.084609486163         0.024297694393         0.002644046443
 
-    Ordenación por Montículos: 
-        Vector de entrada ordenado:
-               n                           t(n)       t(n)/(n^0.8)*log2(n)     t(n)/(n^0.98*log2(n))   t(n)/(n^1.2)*log2(n)
-    (*)      500                        51.7940          0.040041944872          0.013082795792          0.003333704963
-    (*)     1000                       125.5900          0.050169939587          0.014469168628          0.003165509185
-    (*)     2000                       293.5810          0.061215901647          0.015583996836          0.002927199028
-            4000                       632.0000          0.069363007593          0.015586805551          0.002513644866
-            8000                      1309.0000          0.076149817195          0.015104719596          0.002091379614
-           16000                      2740.0000          0.084994191497          0.014881532261          0.001769054669
-           32000                      5664.0000          0.094168094164          0.014553812814          0.001485401266
-           64000                     11945.0000          0.106918268700          0.014586111275          0.001278144419
-          128000                     24985.0000          0.120875264466          0.014555919422          0.001095099169
-          256000                     52244.0000          0.137087629816          0.014571862815          0.000941244132
-                                                                                     cte=0.0145
-        Vector de entrada ordenado al revés:
-               n                           t(n)      t(n)/(n^0.8)*log2(n)       t(n)/(n^0.98*log2(n))   t(n)/(n^1.2)*log2(n)
-    (*)      500                        60.0140          0.046396827423          0.015159109292          0.003862782748
-    (*)     1000                       139.1370          0.055581613857          0.016029912536          0.003506962748
-    (*)     2000                       304.0130          0.063391125132          0.016137752886          0.003031213049
-            4000                       644.0000          0.070680026724          0.015882757556          0.002561372300
-            8000                      1339.0000          0.077895038368          0.015450893460          0.002139310392
-           16000                      2776.0000          0.086110903503          0.015077056042          0.001792297723
-           32000                      5774.0000          0.095996923677          0.014836461015          0.001514249101
-           64000                     12187.0000          0.109084381803          0.014881618929          0.001304039015
-          128000                     25484.0000          0.123289383216          0.014846630000          0.001116970471
-          256000                     53072.0000          0.139260291891          0.014802808041          0.000956161637
-                                                                                     cte=0.0148
-        Vector de entrada aleatorio:
-               n                           t(n)       t(n)/(n^0.8)*log2(n)     t(n)/(n^1.02*log2(n)    t(n)/(n^1.2)*log2(n)
-    (*)      500                        73.6700          0.056954281939          0.014512859132          0.004741747010
-    (*)     1000                       161.6520          0.064575770954          0.014127639353          0.004074455696
-    (*)     2000                       354.1830          0.073852298660          0.013871946918          0.003531441522
-            4000                       768.0000          0.084289224417          0.013593110884          0.003054555786
-            8000                      1649.0000          0.095928990492          0.013282201884          0.002634595098
-           16000                      3546.0000          0.109996132500          0.013075882800          0.002289440823
-           32000                      7630.0000          0.126854265267          0.012947087378          0.002000990759
-           64000                     16319.0000          0.146069420419          0.012799697673          0.001746173192
-          128000                     35063.0000          0.169631754972          0.012762065284          0.001536820579
-          256000                     75425.0000          0.197914295974          0.012783929691          0.001358880228
-          512000                    162409.0000          0.231858657491          0.012858310993          0.001206466681
-                                                                                     cte=0.0127
-                                                                                       
-     (*) Tiempo promedio en 1000 ejecuciones del algoritmo
-
+    (*) Tiempo promedio en 1000 ejecuciones del algoritmo
 
 
     5. Conclusión: Los cocientes del tiempo en función de n entre cotas ajustadas tienden a una
     constante
 
-    > Para un vector ordenado, la cota ajustada del algoritmo de creación de montículos es O(n^1.065), cota superior
-      de t(n). Para un vector ordenado, la cota ajustada del algoritmo de ordenación por montículos es O(n^0.995*log2(n)), cota superior
-      de t(n)
+    > Para grafos generados aleatoriamente, la cota ajustada del algoritmo de Dijkstra es O(2.98), cota superior de t(n).
+      
+      Por tanto se puede decir que el algoritmo de Dijkstra tiene complejidad O(n^3) en tiempos de ejecución.
 
-        CREACIÓN DE MONTÍCULOS => t(n) = O(n^1.065)
-        ORDENACIÓN POR MONTÍCULOS => t(n) = O(n^0.995*log2(n))
-
-    > Para un vector ordenado al revés (de forma decreciente), la cota ajustada del algoritmo de creación de montículos
-      es O(n^1.065), cota superior de t(n). Para un vector ordenado al revés, la cota ajustada del algoritmo de
-      ordenación por montículos es O(n*log2(n)), cota superior de t(n)
-
-        CREACIÓN DE MONTÍCULOS => t(n) = O(n^1.065)
-        ORDENACIÓN POR MONTÍCULOS => t(n) = O(n*log2(n))
-
-    > Para un vector generado aleatoriamente, la cota ajustada del algoritmo de ordenación por inserción es
-      O(n^1.11), cota superior de t(n). Para un vector generado aleatoriamente, la cota superior del algoritmo
-      de ordenación por montículos es O(n^1.05*log2(n)), cota superior de t(n)
-
-        CREACIÓN DE MONTÍCULOS => t(n) = O(n^1.11)
-        ORDENACIÓN POR MONTÍCULOS => t(n) = O(n^1.05*log2(n))
-
-    Cabe destacar lo estable que son los algoritmo de creación de montículos y ordenación por montículos, ya que su complejidad apenas varía
-    independientemente de si el vector de entrada estaba inicialmente ordenado, ordenado al revés o de forma aleatoria.
-
------------------------------------------------------------------------------------------------------------------------	
+-----------------------------------------------------------------------------------------------------------------------    
