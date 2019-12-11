@@ -100,6 +100,18 @@ byte igualaref(matriz m) {
     return true;
  }
 
+byte igualaref2(matriz m) {
+    int i,j;
+    int r[][4] =
+    {{0,1,3,6},
+    {1,0,2,5},
+    {3,2,0,3},
+    {6,5,3,0}};
+    for (i = 0; i < 4; i++)
+        for (j = 0; j < 4; j++) if (m[i][j] == r[i][j]) continue; else return false;
+    return true;
+ }
+
 void dijkstra(matriz grafo, matriz distancias, int tam){
     byte* noVisitados = malloc(sizeof(byte) * tam);
     int i,j,m,v,w, dist_min;
@@ -151,6 +163,31 @@ void test_dijkstra(){
   dijkstra(m,d,5);
   printm(d,5);
   if (igualaref(d))
+    printf("Es correcto\n");
+  else printf("No es correcto\n");
+}
+
+void test_dijkstra_2(){
+  int i,j;
+  matriz d,m;
+  int temp[][4] =
+    {{0,1,4,7},
+    {1,0,2,8},
+    {4,2,0,3},
+    {7,8,3,0}};
+  d = crearMatriz(5);
+  m = crearMatriz(5);
+  iniMatriz(m,5);
+  iniMatriz(d,5);
+  for (i = 0; i < 4; i++)
+    for (j = 0; j < 4; j++) m[i][j] = temp[i][j];
+  printf("Test de funcionamiento del algoritmo de Dijkstra:\n");
+  printf("Matriz de adyacencia del grafo:\n");
+  printm(m,4);
+  printf("Tabla de distancias mínimas:\n");
+  dijkstra(m,d,4);
+  printm(d,4);
+  if (igualaref2(d))
     printf("Es correcto\n");
   else printf("No es correcto\n");
 }
@@ -220,6 +257,8 @@ void print_dijkstra(){
 int main(int argc, char const *argv[]){
     inicializar_semilla();
     test_dijkstra();
+    printf("\n");
+    test_dijkstra_2();
     print_dijkstra();
     return 0;
 }
