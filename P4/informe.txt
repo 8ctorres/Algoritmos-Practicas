@@ -61,6 +61,9 @@
     > Para grafos n-completos no dirigidos generados aleatoriamente, la cota ajustada del algoritmo de Dijkstra generalizado
     a todos los nodos del grafo, es O(2.98) que es cota superior de t(n).
 
-      Cabe destacar que la complejidad obtenida empíricamente es ligeramente inferior a la teórica, O(n^3) (para grafos n-completos)
+      La complejidad computacional teórica es de O(n^3), dado que lo que se hace es aplicar algoritmo de Dijkstra (de complejidad teórica O(n^2))
+      a todos los N nodos del grafo. Es decir, es O(n) * O(n^2) = O(n^3)
+
+      Cabe destacar que la complejidad computacional obtenida empíricamente es ligeramente inferior a la teórica, O(n^3) (para grafos n-completos)
 
 -----------------------------------------------------------------------------------------------------------------------    
