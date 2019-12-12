@@ -9,7 +9,7 @@
     En este experimento se evaluará empíricamente el rendimiento del algoritmo de Dijkstra, algoritmo que recorre un grafo y calcula los caminos mínimos
     de cada nodo a todos los demás.
 
-  1.Características de la máquina: ----------------- 
+  1.Características de la máquina:   ----------------- 
                                      OS: elementary OS i686
                                      Kernel: 3.19.0-80-generic 
                                      CPU: Intel Core 2 6300 (2) @ 1.867GHz 
@@ -48,16 +48,22 @@
          128             45551.0000         0.057320504039         0.023933830229         0.005066464638
          256            359722.0000         0.064997267096         0.023955867522         0.004062329193
          512           2837693.0000         0.073622323263         0.023951952689         0.003253677752
-        1024          22712186.0000         0.084609486163         0.024297694393         0.002644046443
+ #      1024          22712186.0000         0.084609486163         0.024297694393         0.002644046443
+                                                                   cte=0.2395
 
     (*) Tiempo promedio en 1000 ejecuciones del algoritmo
 
+    # Anomalía persistente que no sigue el patrón dado por el resto de los tiempos.
+      Probablemente debida a limitaciones del hardware. Se ha intentado evitar sin éxito.
 
-    5. Conclusión: Los cocientes del tiempo en función de n entre cotas ajustadas tienden a una
-    constante
-
-    > Para grafos generados aleatoriamente, la cota ajustada del algoritmo de Dijkstra es O(2.98), cota superior de t(n).
+    5. Conclusión:
+    
+    > Para grafos n-completos generados aleatoriamente, la cota ajustada del algoritmo de Dijkstra, generalizado
+    a todos los nodos del grafo, es O(2.98) que es cota superior de t(n).
       
-      Por tanto se puede decir que el algoritmo de Dijkstra tiene complejidad O(n^3) en tiempos de ejecución.
+      Por tanto la complejidad computacional empírica del algoritmo de Dijkstra es cercana a su complejidad
+      teórica O(n^3)(*) reforzando la integridad de esta.
+
+      (*)Para grafos n-completos.
 
 -----------------------------------------------------------------------------------------------------------------------    
