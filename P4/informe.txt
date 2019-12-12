@@ -6,8 +6,8 @@
  * Grupo 4.3
 
  * Informe Práctica 2: Algoritmos de Dijkstra:
-    En este experimento se evaluará empíricamente el rendimiento del algoritmo de Dijkstra, algoritmo que recorre un grafo y calcula los caminos mínimos
-    de cada nodo a todos los demás.
+    En este experimento se evaluará empíricamente el rendimiento del algoritmo de Dijkstra generalizado a todos los nodos,
+    que recorre un grafo y calcula los caminos mínimos de cada nodo a todos los demás.
 
   1.Características de la máquina:   ----------------- 
                                      OS: elementary OS i686
@@ -58,12 +58,9 @@
 
     5. Conclusión:
     
-    > Para grafos n-completos generados aleatoriamente, la cota ajustada del algoritmo de Dijkstra, generalizado
+    > Para grafos n-completos no dirigidos generados aleatoriamente, la cota ajustada del algoritmo de Dijkstra generalizado
     a todos los nodos del grafo, es O(2.98) que es cota superior de t(n).
-      
-      Por tanto la complejidad computacional empírica del algoritmo de Dijkstra es cercana a su complejidad
-      teórica O(n^3)(*) reforzando la integridad de esta.
 
-      (*)Para grafos n-completos.
+      Cabe destacar que la complejidad obtenida empíricamente es ligeramente inferior a la teórica, O(n^3) (para grafos n-completos)
 
 -----------------------------------------------------------------------------------------------------------------------    

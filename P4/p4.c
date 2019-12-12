@@ -192,9 +192,7 @@ void test_dijkstra_2(){
   else printf("No es correcto\n");
 }
 
-double medir_tiempo(
-    void (* algoritmo)(matriz grafo, matriz distancias, int tam),
-    int tam, int k){
+double medir_tiempo(int tam, int k){
 //K es el número de repeticiones en caso de tener que medir tiempos pequeños
     double t_inicio = 0.0; //tiempo de inicio
     double t_fin = 0.0; //tiempo de fin
@@ -210,7 +208,7 @@ double medir_tiempo(
     distancias = crearMatriz(tam);
     iniMatriz(mat, tam);
     t_inicio = microsegundos();
-    algoritmo(mat, distancias, tam); //aplica el algoritmo indicado
+    dijkstra(mat, distancias, tam); //aplica el dijkstra indicado
                        //por parámetro a la matriz generada
     t_fin = microsegundos();
     t_test = t_fin - t_inicio;
@@ -219,7 +217,7 @@ double medir_tiempo(
         t_inicio = microsegundos();
         for (i = 0; i < k; i++){
             iniMatriz(mat, tam);
-            algoritmo(mat, distancias, tam);
+            dijkstra(mat, distancias, tam);
         }
         t_fin = microsegundos();
         t_test_init = t_fin-t_inicio;
@@ -244,7 +242,7 @@ void print_dijkstra(){
     printf("\t       n\t\t\t   t(n)\t\t   t(n)/(n^2.8)"
             "\t\t  t(n)/(n^2.98)\t\t   t(n)/(n^3.2)\n");
     for (n=8; n<=2000; n*=2){
-        tiempo = medir_tiempo(dijkstra, n, k);
+        tiempo = medir_tiempo(n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
                n, tiempo, tiempo/(pow(n,2.8)),
                tiempo/(pow(n,2.98)),
