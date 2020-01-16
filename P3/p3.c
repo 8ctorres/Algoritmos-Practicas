@@ -244,6 +244,12 @@ double medir_tiempo(void (* algoritmo)(int v[], int tam),
     free(v); return t_test;
 }
 
+void adaptador(int v[],int n) {
+  monticulo * m = malloc(sizeof(monticulo));
+  crearMonticulo(v,n,m);
+  free(m);
+}
+
 void print_crearmonticulo(){
     int k = 1000;
     double tiempo = 0.0;
@@ -251,35 +257,36 @@ void print_crearmonticulo(){
         //Creación de Monticulos
     printf("Creación de Montículos: \n");
     printf("\tVector de entrada ordenado:\n");
-    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.9\t\t   t(n)/n^1.065\t\t"
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.9\t\t   \t t(n)/n\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=512000; n*=2){
-        tiempo = medir_tiempo(heapsort, ascendente, n, k);
+        tiempo = medir_tiempo(adaptador, ascendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.9)), tiempo/(pow(n,1.065)),
+               n, tiempo, tiempo/(pow(n,0.9)), tiempo/n,
                tiempo/(pow(n,1.2)));
     }
 
     printf("\n\tVector de entrada ordenado al revés:\n");
-    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t   t(n)/n^1.065\t\t"
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t   \t t(n)/n\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=MAXSIZE; n*=2){
-        tiempo = medir_tiempo(heapsort, descendente, n, k);
+        tiempo = medir_tiempo(adaptador, descendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.065)),
+               n, tiempo, tiempo/(pow(n,0.8)), tiempo/n,
                tiempo/(pow(n,1.2)));
     }
 
     printf("\n\tVector de entrada aleatorio:\n");
-    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    t(n)/n^1.11\t\t"
+    printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    \t t(n)/n\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=512000; n*=2){
-        tiempo = medir_tiempo(heapsort, aleatorio, n, k);
+        tiempo = medir_tiempo(adaptador, aleatorio, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-               n, tiempo, tiempo/(pow(n,0.8)), tiempo/(pow(n,1.105)),
+               n, tiempo, tiempo/(pow(n,0.8)), tiempo/n,
                tiempo/(pow(n,1.2)));
     }
-    printf("\n\n\n (*) Tiempo promedio en %d ejecuciones del algoritmo\n\n",k);
+    printf("\n\n\n"
+    " (*) Tiempo promedio en %d ejecuciones del algoritmo\n\n",k);
 }
 
 void print_heapsort(){

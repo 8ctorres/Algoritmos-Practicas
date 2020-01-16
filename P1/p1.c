@@ -44,7 +44,7 @@ int sumasubMax2(int v[], int tam){
 
 void inicializar_semilla() {
     srand(time(NULL));
-    /* se establece la semilla de una nueva serie de enteros pseudo-aleatorios */
+  /* se establece la semilla de una nueva serie de enteros pseudo-aleatorios */
 }
 
 void aleatorio(int v [], int n) {
@@ -101,7 +101,7 @@ void test2() {
     }
 }
 
-double medir_tiempo(int (* algoritmo)(int v[], int tam) , int tam, int k){ 
+double medir_tiempo(int (* algoritmo)(int v[], int tam) , int tam, int k) {
 //K es el número de repeticiones en caso de tener que medir tiempos pequeños
     double t_inicio = 0.0; //tiempo de inicio
     double t_fin = 0.0; //tiempo de fin
@@ -109,8 +109,9 @@ double medir_tiempo(int (* algoritmo)(int v[], int tam) , int tam, int k){
     double t_test_init = 0.0; //tiempo de test+inicializacion
     double t_init = 0.0; //tiempo de solo inicialización
     int i; //iterador de los bucles for
+    int *v;
 
-    int *v = malloc(tam*sizeof(int));
+    v = malloc(tam*sizeof(int));
     aleatorio(v, tam); //rellena un vector de [tam] enteros aleatorios
     t_inicio = microsegundos();
     algoritmo(v, tam);
@@ -147,8 +148,8 @@ void test3(){
     "   t(n)/n^2.0\t\t     t(n)/n^2.2\n");
     for (n=500; n<=64000; n*=2){
         tiempo = medir_tiempo(sumasubMax1, n, k);
-        printf("\t% 8d\t\t% 14.5f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
-        n, tiempo, tiempo/(pow(n,1.8)), tiempo/(pow(n,2)), tiempo/(pow(n,2.2)));
+        printf("\t% 8d\t\t% 14.5f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n", n,
+        tiempo, tiempo/(pow(n,1.8)), tiempo/(pow(n,2)), tiempo/(pow(n,2.2)));
     }
     printf("\n");
 

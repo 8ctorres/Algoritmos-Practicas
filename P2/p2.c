@@ -147,10 +147,11 @@ double medir_tiempo(void (* algoritmo)(int v[], int tam),
     double t_test_init = 0.0; //tiempo de test+inicializacion
     double t_init = 0.0; //tiempo de solo inicialización
     int i; //Iterador
+    int *v;
     //f_init es la función de inicialización
     //algoritmo es la función de ordenación
 
-    int *v = malloc(tam*sizeof(int));
+    v = malloc(tam*sizeof(int));
     f_init(v, tam); //genera un vector de [tam] enteros
     t_inicio = microsegundos();
     algoritmo(v, tam); //aplica el algoritmo indicado

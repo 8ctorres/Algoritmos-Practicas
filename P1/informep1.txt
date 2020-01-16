@@ -35,7 +35,7 @@
         t'(n)-> función de tiempo de Algoritmo 2
 
     Algoritmo SumaSubMax 1: 
-                              Cota subestimada:   Cota exacta:      Cota sobreestimada:
+                                                        Cota subestimada:       Cota exacta:            Cota sobreestimada:
 	       n			  t(n)		     t(n)/n^1.8		     t(n)/n^2.0		     t(n)/n^2.2
 (*)	     500		     324.17350		 0.004493983796		 0.001296694000		 0.000374148062
 	    1000		    1281.00000		 0.005099752855		 0.001281000000		 0.000321772652
@@ -48,8 +48,8 @@
                                                     cte = 0.00128
 
     Algoritmo SumaSubMax 2: 
-                              Cota subestimada:   Cota exacta:      Cota sobreestimada:
-	       n			 t'(n)		    t'(n)/n^0.8		    t'(n)/n             t'(n)/n^1.2
+                                                        Cota subestimada:       Cota exacta:            Cota sobreestimada:
+	       n			 t'(n)		    t'(n)/n^0.8		        t'(n)/n             t'(n)/n^1.2
 (*)	     500		       1.95050		 0.013519790166		 0.003901000000		 0.001125594467
 (*)	    1000		       3.55500		 0.014152709913		 0.003555000000		 0.000892975626
 (*)	    2000		       6.31250		 0.014433690701		 0.003156250000		 0.000690184809
