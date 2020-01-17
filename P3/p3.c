@@ -71,22 +71,17 @@ void flotar(monticulo *M, int i){
   hijo = i;
   pad = (hijo-1)/2;
   while (M->vec[pad] < M->vec[hijo]) {
-      intercambiar(&M->vec[pad],&M->vec[hijo]);
-      hijo = pad;
-      pad /= 2;
+    intercambiar(&(M->vec[pad]),&(M->vec[hijo]));
+    hijo = pad;
+    pad /= 2;
   }
 }
 
-void insertarEnMonticulo(monticulo *M,int nuevo) {
-  M->vec[++M->ultimo] = nuevo;
-  flotar(M,M->ultimo);
-}
-
-void funCrear(int v[],int n,monticulo *M) {
+void crearMonticuloMaximos(int v[],int n,monticulo *M) {
   int i;
   for (i = 0; i < n; i++) {
-    insertarEnMonticulo(M,v[i]);
-    flotar(M,i);
+    M->vec[++M->ultimo] = v[i];
+    flotar(M,M->ultimo);
   }
 }
 
@@ -107,7 +102,7 @@ void hundir(monticulo *M, int i){
     } while (i!=j);
 }
 
-void crearMonticulo(int v[],int n, monticulo * m) {
+void crearMonticuloMinimos(int v[],int n, monticulo * m) {
     int i;
     m->ultimo = -1;
 
@@ -133,17 +128,25 @@ int quitarMenor(monticulo *M){
 void heapsort(int v[], int tam){
     int i;
     monticulo M;
-    crearMonticulo(v,tam,&M);
+    crearMonticuloMinimos(v,tam,&M);
     for (i = 0; i < tam; i++)
     {
         v[i]=quitarMenor(&M);
     }
 }
 
-int esMonticulo(monticulo *M){
+int esMonticuloMin(monticulo *M){
   int i;
   for (i = 1; i<=M->ultimo; i++)
     if(M->vec[i] > M->vec[(i-1)/2])
+      return 0;
+  return 1;
+}
+
+int esMonticuloMax(monticulo *M){
+  int i;
+  for (i = 1; i<=M->ultimo; i++)
+    if(M->vec[i] < M->vec[(i-1)/2])
       return 0;
   return 1;
 }
@@ -156,6 +159,7 @@ int estaOrdenado(int v[], int tam){
   return 1;
 }
 
+/*
 void test_crearmonticulo(){
   int vector[25];
   monticulo* M;
@@ -164,10 +168,10 @@ void test_crearmonticulo(){
   printf("\tVector ordenado:\n");
   ascendente(vector,25);
   printv(vector,25);
-  crearMonticulo(vector,25,M);
+  crearMonticuloMinimos(vector,25,M);
   printf("\tMontículo creado:\n");
   printv(M->vec,25);
-  if (esMonticulo(M)) printf("ERROR: Creación de montículo\n");
+  if (esMonticuloMin(M)) printf("ERROR: Creación de montículo\n");
   else printf("Montículo creado correctamente\n");
   printf("\n"); free(M);
 
@@ -175,10 +179,10 @@ void test_crearmonticulo(){
   printf("\tVector ordenado al revés:\n");
   descendente(vector,25);
   printv(vector,25);
-  crearMonticulo(vector,25,M);
+  crearMonticuloMinimos(vector,25,M);
   printf("\tMonticulo creado:\n");
   printv(M->vec,25);
-  if (esMonticulo(M)) fprintf(stderr,"ERROR: Creación de montículo\n");
+  if (esMonticuloMin(M)) fprintf(stderr,"ERROR: Creación de montículo\n");
   else printf("Montículo creado correctamente\n");
   printf("\n");  free(M);
 
@@ -186,15 +190,17 @@ void test_crearmonticulo(){
   printf("\tVector aleatorio:\n");
   aleatorio(vector,25);
   printv(vector,25);
-  crearMonticulo(vector,25,M);
+  crearMonticuloMinimos(vector,25,M);
   printf("\tMonticulo creado:\n");
   printv(M->vec,25);
-  if (esMonticulo(M)) fprintf(stderr,"ERROR: Creación de montículo\n");
+  if (esMonticuloMin(M)) fprintf(stderr,"ERROR: Creación de montículo\n");
   else printf("Montículo creado correctamente\n");
   printf("\n"); free(M);
 }
+*/
 
-void test_crearmonticulo2(void(funCrear)(int[],int,monticulo *)){
+void test_crearmonticulo(void(funCrear)(int[], int, monticulo *),
+                         int(esMonticulo)(monticulo *)){
   int vector[25];
   monticulo* M;
   M = malloc(sizeof(monticulo));
@@ -231,9 +237,6 @@ void test_crearmonticulo2(void(funCrear)(int[],int,monticulo *)){
   else printf("Montículo creado correctamente\n");
   printf("\n"); free(M);
 }
-
-
-
 
 void test_heapsort(){
     int vector[25];
@@ -308,9 +311,15 @@ double medir_tiempo(void (* algoritmo)(int v[], int tam),
     free(v); return t_test;
 }
 
-void adaptador(int v[],int n) {
+void adaptadorMin(int v[],int n) {
   monticulo * m = malloc(sizeof(monticulo));
-  crearMonticulo(v,n,m);
+  crearMonticuloMinimos(v,n,m);
+  free(m);
+}
+
+void adaptadorMax(int v[],int n) {
+  monticulo * m = malloc(sizeof(monticulo));
+  crearMonticuloMaximos(v,n,m);
   free(m);
 }
 
@@ -324,7 +333,7 @@ void print_crearmonticulo(){
     printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.9\t\t   \t t(n)/n\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=512000; n*=2){
-        tiempo = medir_tiempo(adaptador, ascendente, n, k);
+        tiempo = medir_tiempo(adaptadorMin, ascendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
                n, tiempo, tiempo/(pow(n,0.9)), tiempo/n,
                tiempo/(pow(n,1.2)));
@@ -334,7 +343,7 @@ void print_crearmonticulo(){
     printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t   \t t(n)/n\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=MAXSIZE; n*=2){
-        tiempo = medir_tiempo(adaptador, descendente, n, k);
+        tiempo = medir_tiempo(adaptadorMin, descendente, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
                n, tiempo, tiempo/(pow(n,0.8)), tiempo/n,
                tiempo/(pow(n,1.2)));
@@ -344,7 +353,7 @@ void print_crearmonticulo(){
     printf("\t       n\t\t\t   t(n)\t\t     t(n)/n^0.8\t\t    \t t(n)/n\t\t"
            "     t(n)/n^1.2\n");
     for (n=500; n<=512000; n*=2){
-        tiempo = medir_tiempo(adaptador, aleatorio, n, k);
+        tiempo = medir_tiempo(adaptadorMin, aleatorio, n, k);
         printf("\t% 8d\t\t% 15.4f\t\t% 14.12f\t\t% 14.12f\t\t% 14.12f\n",
                n, tiempo, tiempo/(pow(n,0.8)), tiempo/n,
                tiempo/(pow(n,1.2)));
@@ -393,7 +402,8 @@ void print_heapsort(){
 
 int main(int argc, char const *argv[]){
     inicializar_semilla();
-    test_crearmonticulo2(funCrear);
+    test_crearmonticulo(crearMonticuloMaximos,esMonticuloMax);
+    test_crearmonticulo(crearMonticuloMinimos,esMonticuloMin);
     //test_heapsort();
     //print_crearmonticulo();
     //print_heapsort();
