@@ -66,6 +66,30 @@ void intercambiar(int *a, int *b){
     *b = tmp;
 }
 
+void flotar(monticulo *M, int i){
+  int pad,hijo;
+  hijo = i;
+  pad = (hijo-1)/2;
+  while (M->vec[pad] < M->vec[hijo]) {
+      intercambiar(&M->vec[pad],&M->vec[hijo]);
+      hijo = pad;
+      pad /= 2;
+  }
+}
+
+void insertarEnMonticulo(monticulo *M,int nuevo) {
+  M->vec[++M->ultimo] = nuevo;
+  flotar(M,M->ultimo);
+}
+
+void funCrear(int v[],int n,monticulo *M) {
+  int i;
+  for (i = 0; i < n; i++) {
+    insertarEnMonticulo(M,v[i]);
+    flotar(M,i);
+  }
+}
+
 void hundir(monticulo *M, int i){
     int HijoDer, HijoIzq, j;
     do
@@ -119,7 +143,7 @@ void heapsort(int v[], int tam){
 int esMonticulo(monticulo *M){
   int i;
   for (i = 1; i<=M->ultimo; i++)
-    if(M->vec[i]>M->vec[(i-1)/2])
+    if(M->vec[i] > M->vec[(i-1)/2])
       return 0;
   return 1;
 }
@@ -169,6 +193,46 @@ void test_crearmonticulo(){
   else printf("Montículo creado correctamente\n");
   printf("\n"); free(M);
 }
+
+void test_crearmonticulo2(void(funCrear)(int[],int,monticulo *)){
+  int vector[25];
+  monticulo* M;
+  M = malloc(sizeof(monticulo));
+  printf("Test algoritmo creación montículos:\n");
+  printf("\tVector ordenado:\n");
+  ascendente(vector,25);
+  printv(vector,25);
+  funCrear(vector,25,M);
+  printf("\tMontículo creado:\n");
+  printv(M->vec,25);
+  if (esMonticulo(M)) printf("ERROR: Creación de montículo\n");
+  else printf("Montículo creado correctamente\n");
+  printf("\n"); free(M);
+
+  M = malloc(sizeof(monticulo));
+  printf("\tVector ordenado al revés:\n");
+  descendente(vector,25);
+  printv(vector,25);
+  funCrear(vector,25,M);
+  printf("\tMonticulo creado:\n");
+  printv(M->vec,25);
+  if (esMonticulo(M)) fprintf(stderr,"ERROR: Creación de montículo\n");
+  else printf("Montículo creado correctamente\n");
+  printf("\n");  free(M);
+
+  M = malloc(sizeof(monticulo));
+  printf("\tVector aleatorio:\n");
+  aleatorio(vector,25);
+  printv(vector,25);
+  funCrear(vector,25,M);
+  printf("\tMonticulo creado:\n");
+  printv(M->vec,25);
+  if (esMonticulo(M)) fprintf(stderr,"ERROR: Creación de montículo\n");
+  else printf("Montículo creado correctamente\n");
+  printf("\n"); free(M);
+}
+
+
 
 
 void test_heapsort(){
@@ -329,9 +393,9 @@ void print_heapsort(){
 
 int main(int argc, char const *argv[]){
     inicializar_semilla();
-    test_crearmonticulo();
-    test_heapsort();
-    print_crearmonticulo();
-    print_heapsort();
+    test_crearmonticulo2(funCrear);
+    //test_heapsort();
+    //print_crearmonticulo();
+    //print_heapsort();
     return 0;
 }
