@@ -76,6 +76,30 @@ void liberarMatriz(matriz m, int n) {
     free(m);
 }
 
+typedef matriz listad;
+
+listad crearListaAd(int n) {
+  int i,** aux;
+  if ((aux = malloc(n*sizeof(int *))) == NULL)
+    return NULL;
+  for (i=0; i < n; i++) aux[i] = NULL;
+  return aux;
+}
+
+void iniListaAd(listad l,int n) {
+  //Una lista de adyacencia de un grafo completo es basicamente lo mismo que
+  //representarlo con una matriz.
+  int i;
+  for (i = 0; i < n; i++) l[i] = malloc(sizeof(int)*n);
+  //^^ No esta protegido frente a fallos
+  iniMatriz(l,n);
+}
+
+void liberarListaAd(listad l, int n) {
+  int i;
+  for (i = 0; i < n; i++) free(l[i]);
+}
+
 void printm(matriz m, int n) {
     int i,j;
     for (i = 0; i < n; i++) {
@@ -165,6 +189,8 @@ void test_dijkstra(){
   if (igualaref(d))
     printf("Es correcto\n");
   else printf("No es correcto\n");
+  liberarMatriz(d,5);
+  liberarMatriz(m,5);
 }
 
 void test_dijkstra_2(){
@@ -190,6 +216,8 @@ void test_dijkstra_2(){
   if (igualaref2(d))
     printf("Es correcto\n");
   else printf("No es correcto\n");
+  liberarMatriz(d,5);
+  liberarMatriz(d,5);
 }
 
 double medir_tiempo(int tam, int k){
