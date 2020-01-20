@@ -70,6 +70,8 @@ void flotar(monticulo *M, int i){
   int pad,hijo;
   hijo = i;
   pad = (hijo-1)/2;
+  //Cuidado con la condición del bucle,
+  //puede ser necesario un centinela de posición
   while (M->vec[pad] < M->vec[hijo]) {
     intercambiar(&(M->vec[pad]),&(M->vec[hijo]));
     hijo = pad;

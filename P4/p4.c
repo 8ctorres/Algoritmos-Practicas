@@ -92,6 +92,7 @@ void iniListaAd(listad l,int n) {
   int i;
   for (i = 0; i < n; i++) l[i] = malloc(sizeof(int)*n);
   //^^ No esta protegido frente a fallos
+  //Mucho cuidado con la implementación requerida ya que puede variar
   iniMatriz(l,n);
 }
 
