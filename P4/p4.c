@@ -76,29 +76,73 @@ void liberarMatriz(matriz m, int n) {
     free(m);
 }
 
-typedef matriz listad;
+typedef struct {
+  int nodo,peso;
+} par;
+
+struct nodo{
+  par p;
+  struct nodo * sig;
+};
+
+typedef struct nodo nodo;
+typedef nodo * listad;
+
+//typedef par** listad;
 
 listad crearListaAd(int n) {
-  int i,** aux;
-  if ((aux = malloc(n*sizeof(int *))) == NULL)
+  int i;
+  listad aux;
+  if ((aux = malloc(n*sizeof(nodo))) == NULL)
     return NULL;
-  for (i=0; i < n; i++) aux[i] = NULL;
+  for (i=0; i < n; i++) aux[i].sig = NULL;
   return aux;
 }
 
+void add(nodo aristas,int destino,int peso) {
+  nodo * aux = aristas.sig;
+  while (aux != NULL) aux = aux->sig;
+  aux = malloc(sizeof(nodo));
+  aux->p.peso = peso;
+  aux->p.nodo = destino;
+  aux->sig = NULL;
+}
+
 void iniListaAd(listad l,int n) {
-  //Una lista de adyacencia de un grafo completo es basicamente lo mismo que
-  //representarlo con una matriz.
-  int i;
-  for (i = 0; i < n; i++) l[i] = malloc(sizeof(int)*n);
-  //^^ No esta protegido frente a fallos
+  int i,j,p;
   //Mucho cuidado con la implementación requerida ya que puede variar
-  iniMatriz(l,n);
+  //Esta funcion asume que el grafo es completo, sin aristas <n,n> donde n ∈ N
+  for (i = 0; i < n; i++)
+    for (j = 0; j < n; j++)
+      if (i != j) {
+        add(l[i],j,p = rand() * MAXSIZE -1);
+        add(l[j],i,p);
+      }
+}
+
+void matrizALista(listad l,matriz m,int n) {
+  int i,j,c[n];
+  //c sirve para saber donde está el final de la lista
+  for (i = 0; i < n; i++) c[i] = 0;
+
+  for (i = 0; i < n; i++)
+    for (j = 0; j < n; j++)
+      if (m[i][j] != 0)
+        add(l[i],j,m[i][j]);
+}
+
+void liberar(nodo l) {
+  nodo * elim,* aux = l.sig;
+  while (aux != NULL) {
+    elim = aux;
+    aux = aux->sig;
+    free(elim);
+  }
 }
 
 void liberarListaAd(listad l, int n) {
   int i;
-  for (i = 0; i < n; i++) free(l[i]);
+  for (i = 0; i < n; i++) liberar(l[i]);
 }
 
 void printm(matriz m, int n) {
