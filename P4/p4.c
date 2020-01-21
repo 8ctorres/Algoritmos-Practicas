@@ -75,7 +75,7 @@ void liberarMatriz(matriz m, int n) {
         free(m[i]);
     free(m);
 }
-
+/*
 typedef struct {
   int nodo,peso;
 } par;
@@ -143,8 +143,9 @@ void liberar(nodo l) {
 void liberarListaAd(listad l, int n) {
   int i;
   for (i = 0; i < n; i++) liberar(l[i]);
+  free(l);
 }
-
+*/
 void printm(matriz m, int n) {
     int i,j;
     for (i = 0; i < n; i++) {
@@ -221,8 +222,6 @@ void test_dijkstra(){
   int temp[][5] = {{0,1,8,4,7},{1,0,2,6,5},{8,2,0,9,5},{4,6,9,0,3},{7,5,5,3,0}};
   d = crearMatriz(5);
   m = crearMatriz(5);
-  iniMatriz(m,5);
-  iniMatriz(d,5);
   for (i = 0; i < 5; i++)
     for (j = 0; j < 5; j++) m[i][j] = temp[i][j];
   printf("Test de funcionamiento del algoritmo de Dijkstra:\n");
@@ -246,10 +245,8 @@ void test_dijkstra_2(){
     {1,0,2,8},
     {4,2,0,3},
     {7,8,3,0}};
-  d = crearMatriz(5);
-  m = crearMatriz(5);
-  iniMatriz(m,5);
-  iniMatriz(d,5);
+  d = crearMatriz(4);
+  m = crearMatriz(4);
   for (i = 0; i < 4; i++)
     for (j = 0; j < 4; j++) m[i][j] = temp[i][j];
   printf("Test de funcionamiento del algoritmo de Dijkstra:\n");
@@ -261,8 +258,8 @@ void test_dijkstra_2(){
   if (igualaref2(d))
     printf("Es correcto\n");
   else printf("No es correcto\n");
-  liberarMatriz(d,5);
-  liberarMatriz(d,5);
+  liberarMatriz(d,4);
+  liberarMatriz(m,4);
 }
 
 double medir_tiempo(int tam, int k){
