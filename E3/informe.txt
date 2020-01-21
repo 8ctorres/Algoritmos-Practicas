@@ -1,0 +1,64 @@
+ *
+ * Algoritmos
+ * Examen 3
+ * Carlos Torres (carlos.torres)
+
+* Informe Examen 3: Algoritmo de suma de la subsecuencia máxima:
+  En este experimento se evaluará empíricamente el rendimiento de un algoritmo para
+  encontrar la suma de la subsecuencia máxima, en función del tamaño del vector pasado
+  como parámetro.
+  
+    1.Características de la máquina: El experimento se ha realizado en la máquina "lago157",
+    del laboratorio de la FIC
+
+    2.Unidades de medida: los tiempos se expresarán en microsegundos.
+
+    3.Método: Se determinarán los tiempos de ejecución del algoritmo con una
+    serie de vectores de valores aleatorios, cuyo tamaño seguirá una
+    progresión geométrica de razón 2 que parte de 1000 elementos.
+    El algoritmo sumaSubMax3 ha sido probado con 6 casos particulares de vectores de 5
+    elementos, y además con 10 vectores de 9 elementos generados aleatoriamente, comparando
+    el resultado obtenido con el que darían los algoritmos implementados en la P1
+    Se usarán 2 cotas (subestimada y sobreestimada) para afianzar los resultados de la cota ajustada.
+
+    K = 1000 <- En caso de que el tiempo de ejecución sea muy pequeño se calculará
+    una media de K ejecuciones del algoritmo (con vectores aleatorios distintos)
+
+    4.Resultados:
+        t(n) es función de tiempo del algoritmo sumaSubMax3 en función del número de
+        elementos del vector de entrada
+
+    Tabla de tiempos del algoritmo SumaSubMax 3: 
+
+                                                 COTA SUBESTIMADA       COTA AJUSTADA         COTA SOBREESTIMADA
+                 n                  t(n)             t(n)/n^0.8            t(n)/n^1.03             t(n)/n^1.2
+    (*)       1000              63.79000         0.253952564096         0.051850458626         0.016023323547
+    (*)       2000             131.00700         0.299550814689         0.052147513604         0.014323808522
+    (*)       4000             271.84800         0.357008165286         0.052991272821         0.012937612898
+              8000             553.00000         0.417112439264         0.052788879617         0.011455581697
+             16000            1127.00000         0.488233898897         0.052684193226         0.010162017462
+             32000            2381.00000         0.592433233180         0.054507331101         0.009345002490
+             64000            4985.00000         0.712395526206         0.055885583461         0.008516265529
+            128000           10157.00000         0.833676340917         0.055762108062         0.007552895725
+            256000           21441.00000         1.010771678374         0.057644499472         0.006939961776
+            512000           43701.00000         1.183246984013         0.057536483483         0.006156975448
+           1024000           89456.00000         1.391135744103         0.057676715342         0.005485920718
+           2048000          181474.00000         1.620878456904         0.057298672598         0.004844159888
+           4096000          371263.00000         1.904555844231         0.057405158879         0.004313697951
+           8192000          759831.00000         2.238747187487         0.057534105612         0.003842811448
+          16384000         1549124.00000         2.621502226582         0.057442541263         0.003410218886
+                                                                           cte = 0.57
+     (*) Tiempo promedio en 1000 ejecuciones del algoritmo
+
+    5.Conclusión: Los cocientes del tiempo en funcion de n entre cotas ajustadas
+    acaban resultando para valores grandes en la constante 0.57 (aproximadamente)
+
+    > Para vectores generados aleatoriamente, la cota ajustada es O(1.03), cota superior de t(n)
+
+    Cabe destacar que la complejidad obtenida empíricamente de este algoritmo es, muy cercana a la teórica (O(n)),
+    aunque ligeramente superior probablemente debido a limitaciones del hardware o del compilador
+
+    Este algoritmo de suma de subsecuencia máxima es mucho más eficiente que el primero de los que se vió en
+    la primera práctica del curso, cuya complejidad era O(n²)
+
+---------------------------------------------------------------------------------------------------------
